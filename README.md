@@ -53,7 +53,7 @@ cd ImVoxelNet-Unofficial
 pip install torch==2.0.0+cu118 torchvision==0.15.1+cu118 -f https://mirrors.aliyun.com/pytorch-wheels/cu118
 
 # 安装mmcv、mmengine、mmdet
-pip install -U opemmim
+pip install -U openmim
 mim install mmcv==2.0.0
 mim install mmengine==0.10.6
 mim install mmdet==3.3.0
