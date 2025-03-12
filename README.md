@@ -2,7 +2,7 @@
 
 
 ## 声明
-- 本项目不是原创，是基于[ImVoxelNet](https://github.com/SamsungLabs/imvoxelnet）进行的修改，主要是为了适配更高的版本的 pytorch 和 mmcv 。
+- 本项目不是原创，是基于[ImVoxelNet](https://github.com/SamsungLabs/imvoxelnet) 进行的修改，主要是为了适配更高的版本的 pytorch 和 mmcv 。
 - 采用 [OpenMMLab](https://openmmlab.com/) 的 [mmdetection3d](https://github.com/open-mmlab/mmdetection3d) 进行实现，仅能用于预训练模型的推理。
 
 ## 环境配置
@@ -45,6 +45,10 @@ conda create -n imvoxelnet python=3.8.20
 # 激活虚拟环境
 conda activate imvoxelnet
 
+git clone https://github.com/henu77/ImVoxelNet-Unofficial.git
+
+cd ImVoxelNet-Unofficial
+
 # 安装CUDA 11.1版本的torch和torchvision
 pip install torch==2.0.0+cu118 torchvision==0.15.1+cu118 -f https://mirrors.aliyun.com/pytorch-wheels/cu118
 
@@ -62,7 +66,9 @@ pip install PyQt5 pygrabber==0.1
 # 安装Gradio
 pip install gradio==4.44.1
 ```
+### 下载预训练权重
 
+从[这里下载](https://github.com/saic-vul/imvoxelnet/releases/download/v1.2/20211007_105247.pth)对应的预训练权重，放到 `./checkpoints` 文件夹下，并修改为名字为 `imvoxelnet_total_sunrgbd_fast.pth`。
 
 ## 创新点
 1. **端到端的多视角优化**：首次将多视角RGB图像的3D物体检测任务定义为端到端的优化问题，支持任意数量输入（单目或多视角），且在训练和推理中均可灵活处理不同数量的视图。
