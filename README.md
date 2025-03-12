@@ -1,47 +1,5 @@
-# ImVoxelNet: Image to Voxels Projection for Monocular and Multi-View General-Purpose 3D Object Detection
+# ImVoxelNet 复现
 
-## 创新点
-1. **端到端的多视角优化**：首次将多视角RGB图像的3D物体检测任务定义为端到端的优化问题，支持任意数量输入（单目或多视角），且在训练和推理中均可灵活处理不同数量的视图。
-2. **通用全卷积架构**：提出了一种全卷积3D检测框架（ImVoxelNet），通过将2D图像特征投影到3D体素空间，结合3D卷积网络提取特征，并复用点云检测器的头部结构，无需额外修改。
-3. **跨场景通用性**：通过领域特定的检测头（室内/室外）实现统一的架构，在室内外场景（如KITTI、ScanNet）中均取得最优性能，成为首个通用型RGB-based 3D检测方法。
-
-## 方法
-
-1. **数据预处理**：
-   - **特征提取**：使用预训练的2D卷积网络（如ResNet-50）提取多尺度特征，并通过FPN融合。
-   - **体素投影**：将2D特征按相机位姿投影到3D体素空间，通过平均聚合多视角特征，构建3D体素表示。
-2. **3D特征提取**：
-   - **编码器-解码器结构**：针对室内场景设计轻量化的3D卷积网络，降低计算复杂度；室外场景则将体素压缩到BEV平面，使用2D卷积处理。
-3. **检测头设计**：
-   - **室外头**：基于BEV平面，采用2D锚框回归3D边界框（位置、尺寸、角度）。
-   - **室内头**：扩展FCOS到3D，通过多尺度3D卷积预测边界框，引入旋转3D IoU损失。
-   - **额外任务头**：联合估计相机位姿和房间布局（仅用于部分室内数据集）。
-
-![image-20250312195144750](https://raw.githubusercontent.com/henu77/typoryPic/main/2025/image-20250312195144750.png)
-
-## 实验结果
-
-### 指标
-
-- 在 `KITTI` 数据集上的结果
-
-![image-20250312195349843](https://raw.githubusercontent.com/henu77/typoryPic/main/2025/image-20250312195349843.png)
-
-- 在 `SUN RGB-D` 数据集上的结果
-
-![image-20250312195450152](https://raw.githubusercontent.com/henu77/typoryPic/main/2025/image-20250312195450152.png)
-
-- 在 `ScanNet` 数据集上的结果
-
-![image-20250312195512125](https://raw.githubusercontent.com/henu77/typoryPic/main/2025/image-20250312195512125.png)
-
-### 可视化
-
-![image-20250312195612339](https://raw.githubusercontent.com/henu77/typoryPic/main/2025/image-20250312195612339.png)
-
-
-
-![image-20250312195240782](https://raw.githubusercontent.com/henu77/typoryPic/main/2025/image-20250312195240782.png)
 
 ## 声明
 - 本项目不是原创，是基于[ImVoxelNet](https://github.com/SamsungLabs/imvoxelnet）进行的修改，主要是为了适配更高的版本的 pytorch 和 mmcv 。
@@ -79,13 +37,6 @@ nvidia-smi
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
 ```
-### 依赖库
-- python 3.8.20
-- torch 2.0.0+cu118
-- torchvision 0.15.1+cu118
-- mmcv 2.0.0
-- mmengine 0.10.6
-- mmdet 3.3.0
 
 ### 创建环境
 ```shell
@@ -112,4 +63,73 @@ pip install PyQt5 pygrabber==0.1
 pip install gradio==4.44.1
 ```
 
+
+## 创新点
+1. **端到端的多视角优化**：首次将多视角RGB图像的3D物体检测任务定义为端到端的优化问题，支持任意数量输入（单目或多视角），且在训练和推理中均可灵活处理不同数量的视图。
+2. **通用全卷积架构**：提出了一种全卷积3D检测框架（ImVoxelNet），通过将2D图像特征投影到3D体素空间，结合3D卷积网络提取特征，并复用点云检测器的头部结构，无需额外修改。
+3. **跨场景通用性**：通过领域特定的检测头（室内/室外）实现统一的架构，在室内外场景（如KITTI、ScanNet）中均取得最优性能，成为首个通用型RGB-based 3D检测方法。
+
+## 方法
+
+1. **数据预处理**：
+   - **特征提取**：使用预训练的2D卷积网络（如ResNet-50）提取多尺度特征，并通过FPN融合。
+   - **体素投影**：将2D特征按相机位姿投影到3D体素空间，通过平均聚合多视角特征，构建3D体素表示。
+2. **3D特征提取**：
+   - **编码器-解码器结构**：针对室内场景设计轻量化的3D卷积网络，降低计算复杂度；室外场景则将体素压缩到BEV平面，使用2D卷积处理。
+3. **检测头设计**：
+   - **室外检测头**：基于BEV平面，采用2D锚框回归3D边界框（位置、尺寸、角度）。
+   - **室内检测头**：扩展FCOS到3D，通过多尺度3D卷积预测边界框，引入旋转3D IoU损失。
+   - **额外任务头**：联合估计相机位姿和房间布局（仅用于部分室内数据集）。
+
+![image-20250312195144750](https://raw.githubusercontent.com/henu77/typoryPic/main/2025/image-20250312195144750.png)
+
+## 实验结果
+
+### 指标
+
+- 在 `KITTI` 数据集上的结果
+
+![image-20250312195349843](https://raw.githubusercontent.com/henu77/typoryPic/main/2025/image-20250312195349843.png)
+
+- 在 `SUN RGB-D` 数据集上的结果
+
+![image-20250312195450152](https://raw.githubusercontent.com/henu77/typoryPic/main/2025/image-20250312195450152.png)
+
+- 在 `ScanNet` 数据集上的结果
+
+![image-20250312195512125](https://raw.githubusercontent.com/henu77/typoryPic/main/2025/image-20250312195512125.png)
+
 ### 可视化
+
+![image-20250312195612339](https://raw.githubusercontent.com/henu77/typoryPic/main/2025/image-20250312195612339.png)
+
+
+
+![image-20250312195240782](https://raw.githubusercontent.com/henu77/typoryPic/main/2025/image-20250312195240782.png)
+
+
+
+### 界面展示
+
+```shell
+# 运行 PyQT5 界面
+python ui.py
+```
+
+
+
+![image-20250312205924123](https://raw.githubusercontent.com/henu77/typoryPic/main/2025/image-20250312205924123.png)
+
+![image-20250312205806735](https://raw.githubusercontent.com/henu77/typoryPic/main/2025/image-20250312205806735.png)
+
+
+![image-20250312205906440](https://raw.githubusercontent.com/henu77/typoryPic/main/2025/image-20250312205906440.png)
+
+```shell
+# 运行 Gradio 界面
+python gradio_ui.py
+```
+
+![image-20250312210045668](https://raw.githubusercontent.com/henu77/typoryPic/main/2025/image-20250312210045668.png)
+
+![image-20250312210114295](https://raw.githubusercontent.com/henu77/typoryPic/main/2025/image-20250312210114295.png)
